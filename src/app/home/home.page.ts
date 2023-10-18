@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Filesystem, Encoding } from '@capacitor/filesystem';
+import { Filesystem, Encoding, Directory } from '@capacitor/filesystem';
 import { AlertController } from '@ionic/angular';
 
 @Component({
@@ -13,31 +13,27 @@ export class HomePage {
 
   public async AddFolder() {
     try {
-      await Filesystem.writeFile({
-        path: `${this.parentPath}'IonicFolder/IonicData.txt'`,
+      let wrf1 = await Filesystem.writeFile({
+        path: `IonicFolder/IonicData.txt`,
         data: 'This is a test',
         encoding: Encoding.UTF8,
+        directory: Directory.Documents
       });
-    } catch (error:any) {
+    } catch (error: any) {
 
-      const alert = await this.alertController.create({
-        header: 'Alert',
-        subHeader: 'An Error Occured',
-        message: error,
-        buttons: ['OK'],
-      });
+      console.log(error.error);
 
-      await alert.present();
-
-      await Filesystem.mkdir({
-        path: `${this.parentPath}'IonicFolder`,
+      let mkdir = await Filesystem.mkdir({
+        path: `IonicFolder`,
         recursive: false,
+        directory: Directory.Documents
       });
 
-      await Filesystem.writeFile({
-        path: `${this.parentPath}'IonicFolder/IonicData.txt'`,
+      let wrF = await Filesystem.writeFile({
+        path: `${this.parentPath}'IonicFolder/IonicData.txt`,
         data: 'This is a test',
         encoding: Encoding.UTF8,
+        directory: Directory.Documents
       });
 
        const alert2 = await this.alertController.create({
